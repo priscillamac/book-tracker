@@ -1,20 +1,30 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import BookShelf from './book_shelf';
 import * as BooksAPI from '../../utils/books_api';
+import Book from './book';
 
 class BooksPage extends Component {
-  renderBookShelves() {
-    return (
-      <div>
-        <BookShelf shelfLabel="Currently Reading" shelf="currentlyReading" />
-        <BookShelf shelfLabel="Want To Read" shelf="wantToRead" />
-        <BookShelf shelfLabel="Read" shelf="read" />
-      </div>
-    );
+  state = {
+    books: []
+  };
+
+  componentDidMount() {
+    BooksAPI.getAll().then(books => {
+      this.setState({ books });
+    });
   }
 
+  updateBook = (book, newShelf) => {
+    book.shelf = newShelf;
+    BooksAPI.update(book, newShelf).then(
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat([book])
+      }))
+    );
+  };
+
   render() {
+    const { books } = this.state;
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -22,7 +32,48 @@ class BooksPage extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            {this.renderBookShelves()}
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">
+                Currently Reading
+              </h2>
+              <div className="bookshelf-books">
+                <ol className="books-grid">
+                  {books.filter(book => book.shelf === 'currentlyReading').map(book =>
+                    <li key={book.id}>
+                      <Book book={book} onMoveBook={this.updateBook} />
+                    </li>
+                  )}
+                </ol>
+              </div>
+            </div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">
+                Want To Read
+              </h2>
+              <div className="bookshelf-books">
+                <ol className="books-grid">
+                  {books.filter(book => book.shelf === 'wantToRead').map(book =>
+                    <li key={book.id}>
+                      <Book book={book} onMoveBook={this.updateBook} />
+                    </li>
+                  )}
+                </ol>
+              </div>
+            </div>
+            <div className="bookshelf">
+              <h2 className="bookshelf-title">
+                Read
+              </h2>
+              <div className="bookshelf-books">
+                <ol className="books-grid">
+                  {books.filter(book => book.shelf === 'read').map(book =>
+                    <li key={book.id}>
+                      <Book book={book} onMoveBook={this.updateBook} />
+                    </li>
+                  )}
+                </ol>
+              </div>
+            </div>
           </div>
         </div>
         <div className="open-search">
