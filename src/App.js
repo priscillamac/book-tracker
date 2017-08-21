@@ -1,10 +1,11 @@
 import React, { Component } from 'react';
 import { Route } from 'react-router-dom';
 import './styles/app.css';
-import SearchPage from './scenes/search/search_page';
-import BooksPage from './scenes/books/books_page';
+import SearchPage from './components/search_page';
+import BooksPage from './components/books_page';
 
 class BooksApp extends Component {
+
   render() {
     return (
       <div className="app">

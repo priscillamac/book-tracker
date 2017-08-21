@@ -22,7 +22,7 @@ class Book extends Component {
               <option value="currentlyReading">Currently Reading</option>
               <option value="wantToRead">Want to Read</option>
               <option value="read">Read</option>
-            <option value="none">Remove</option>
+              <option value="none">None</option>
             </select>
           </div>
         </div>
@@ -30,7 +30,7 @@ class Book extends Component {
           {book.title}
         </div>
         <div className="book-authors">
-          {book.authors.map(author =>
+          {book.authors && book.authors.map(author =>
             <p key={author}>
               {author}
             </p>
