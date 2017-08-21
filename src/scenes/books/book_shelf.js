@@ -13,6 +13,15 @@ class BookShelf extends Component {
     });
   }
 
+  updateBook = (book, newShelf) => {
+    book.shelf = newShelf;
+    BooksAPI.update(book, newShelf).then(
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat([book])
+      }))
+    );
+  };
+
   render() {
     const { shelfLabel, shelf } = this.props;
     const { books } = this.state;
@@ -27,7 +36,7 @@ class BookShelf extends Component {
               book =>
                 book.shelf === shelf &&
                 <li key={book.id}>
-                  <Book book={book} />
+                  <Book book={book} onMoveBook={this.updateBook} />
                 </li>
             )}
           </ol>
