@@ -1,19 +1,9 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import BookShelf from './book_shelf';
-// import * as BooksAPI from '../../utils/books_api';
+import * as BooksAPI from '../../utils/books_api';
 
 class BooksPage extends Component {
-  // state = {
-  //   books: ''
-  // };
-  //
-  // componentDidMount() {
-  //   BooksAPI.getAll().then(books => {
-  //     this.setState({ books });
-  //   });
-  // }
-
   renderBookShelves() {
     return (
       <div>

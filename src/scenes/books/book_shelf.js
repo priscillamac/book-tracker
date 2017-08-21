@@ -32,12 +32,10 @@ class BookShelf extends Component {
         </h2>
         <div className="bookshelf-books">
           <ol className="books-grid">
-            {books.map(
-              book =>
-                book.shelf === shelf &&
-                <li key={book.id}>
-                  <Book book={book} onMoveBook={this.updateBook} />
-                </li>
+            {books.filter(book => book.shelf === shelf).map(book =>
+              <li key={book.id}>
+                <Book book={book} onMoveBook={this.updateBook} />
+              </li>
             )}
           </ol>
         </div>
