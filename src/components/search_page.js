@@ -11,7 +11,7 @@ class SearchPage extends Component {
 
   updateQuery = (query) => {
 
-    this.setState({ query: query });
+    this.setState({ query });
 
     if (query === '') {
       this.setState({ searchResults: [] })
@@ -50,18 +50,17 @@ class SearchPage extends Component {
           </div>
         </div>
         <div className="search-books-results">
-          <ol className="books-grid">
-            {searchResults.length && searchResults.map((book) =>
-              <li key={book.id}>
-
-                <Book book={book} onMoveBook={this.updateBook} />
-              </li>
-            )}
-          </ol>
           {query &&
             <p>
               Showing results for: "{query}"
             </p>}
+          <ol className="books-grid">
+            {searchResults.length && searchResults.map((book) =>
+              <li key={book.id}>
+                <Book book={book} onMoveBook={this.updateBook} />
+              </li>
+            )}
+          </ol>
         </div>
       </div>
     );
