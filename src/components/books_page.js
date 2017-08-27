@@ -40,7 +40,7 @@ class BooksPage extends Component {
                 <ol className="books-grid">
                   {books.filter(book => book.shelf === 'currentlyReading').map(book =>
                     <li key={book.id}>
-                      <Book book={book} onMoveBook={this.updateBook} />
+                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
                     </li>
                   )}
                 </ol>
@@ -54,7 +54,7 @@ class BooksPage extends Component {
                 <ol className="books-grid">
                   {books.filter(book => book.shelf === 'wantToRead').map(book =>
                     <li key={book.id}>
-                      <Book book={book} onMoveBook={this.updateBook} />
+                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
                     </li>
                   )}
                 </ol>
@@ -68,7 +68,7 @@ class BooksPage extends Component {
                 <ol className="books-grid">
                   {books.filter(book => book.shelf === 'read').map(book =>
                     <li key={book.id}>
-                      <Book book={book} onMoveBook={this.updateBook} />
+                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
                     </li>
                   )}
                 </ol>

@@ -6,11 +6,11 @@ import Book from './book';
 class SearchPage extends Component {
   state = {
     query: '', // what the user types in input
-    searchResults: []
+    searchResults: [],
+    books: []
   };
 
   updateQuery = (query) => {
-
     this.setState({ query });
 
     if (query === '') {
@@ -22,10 +22,25 @@ class SearchPage extends Component {
     }
 
   }
+  componentDidMount() {
+    BooksAPI.getAll().then(books => {
+      this.setState({ books });
+    });
+  }
+
+  updateBook = (book, newShelf) => {
+    book.shelf = newShelf;
+    BooksAPI.update(book, newShelf).then(
+      this.setState(state => ({
+        books: state.books.filter(b => b.id !== book.id).concat([book])
+      }))
+    );
+  };
 
   render() {
     const { query, searchResults } = this.state;
     const hasSearchResults = searchResults.length;
+
     return (
       <div className="search-books">
         <div className="search-books-bar">
@@ -55,9 +70,9 @@ class SearchPage extends Component {
               Showing results for: "{query}"
             </p>}
           <ol className="books-grid">
-            {searchResults.length && searchResults.map((book) =>
+            {hasSearchResults && searchResults.map((book) =>
               <li key={book.id}>
-                <Book book={book} onMoveBook={this.updateBook} />
+                <Book book={book} onMoveBook={this.updateBook} value="none"/>
               </li>
             )}
           </ol>

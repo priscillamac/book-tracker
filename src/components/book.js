@@ -2,9 +2,9 @@ import React, { Component } from 'react';
 
 class Book extends Component {
   render() {
-    const { book, onMoveBook } = this.props;
+    const { book, onMoveBook, value } = this.props;
     const hasThumbnail = book.imageLinks ? book.imageLinks.smallThumbnail : '';
-    
+
     return (
       <div className="book">
         <div className="book-top">
@@ -17,7 +17,7 @@ class Book extends Component {
             }}
           />
           <div className="book-shelf-changer">
-            <select value={book.shelf} onChange={(event) => onMoveBook(book, event.target.value)}>
+            <select value={value} onChange={(event) => onMoveBook(book, event.target.value)}>
               <option value="none" disabled>
                 Move to...
               </option>
