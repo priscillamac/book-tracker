@@ -7,26 +7,20 @@ class SearchPage extends Component {
   state = {
     query: '', // what the user types in input
     searchResults: [],
-    books: []
+    showNoResultsMessage: false
   };
 
-  updateQuery = (query) => {
+  updateQuery = query => {
     this.setState({ query });
 
     if (query === '') {
-      this.setState({ searchResults: [] })
+      this.setState({ searchResults: [], showNoResultsMessage: false });
     } else {
-      BooksAPI.search(query).then((searchResults) => {
-        this.setState({ searchResults });
+      BooksAPI.search(query).then(searchResults => {
+        this.setState({ searchResults, showNoResultsMessage: true });
       });
     }
-
-  }
-  componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      this.setState({ books });
-    });
-  }
+  };
 
   updateBook = (book, newShelf) => {
     book.shelf = newShelf;
@@ -38,8 +32,8 @@ class SearchPage extends Component {
   };
 
   render() {
-    const { query, searchResults } = this.state;
-    const hasSearchResults = searchResults.length;
+    const { query, searchResults, showNoResultsMessage } = this.state;
+    const hasSearchResults = searchResults.length > 0;
 
     return (
       <div className="search-books">
@@ -66,15 +60,23 @@ class SearchPage extends Component {
         </div>
         <div className="search-books-results">
           {query &&
-            <p>
+            <p className="text-center">
               Showing results for: "{query}"
             </p>}
           <ol className="books-grid">
-            {hasSearchResults && searchResults.map((book) =>
-              <li key={book.id}>
-                <Book book={book} onMoveBook={this.updateBook} value="none"/>
-              </li>
-            )}
+            {hasSearchResults &&
+              searchResults.map(book =>
+                <li key={book.id}>
+                  <Book
+                    book={book}
+                    onMoveBook={this.updateBook}
+                    value={book.shelf ? book.shelf : 'none'}
+                  />
+                </li>
+              )}
+            {!hasSearchResults &&
+              showNoResultsMessage &&
+              <p>No results found</p>}
           </ol>
         </div>
       </div>

@@ -8,6 +8,10 @@ body, .app {
   background: white;
 }
 
+.text-center {
+  text-align: center;
+}
+
 /* main page */
 
 .list-books-title {

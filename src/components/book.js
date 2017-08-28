@@ -17,7 +17,10 @@ class Book extends Component {
             }}
           />
           <div className="book-shelf-changer">
-            <select value={value} onChange={(event) => onMoveBook(book, event.target.value)}>
+            <select
+              value={value}
+              onChange={event => onMoveBook(book, event.target.value)}
+            >
               <option value="none" disabled>
                 Move to...
               </option>
@@ -32,11 +35,12 @@ class Book extends Component {
           {book.title}
         </div>
         <div className="book-authors">
-          {book.authors && book.authors.map(author =>
-            <p key={author}>
-              {author}
-            </p>
-          )}
+          {book.authors &&
+            book.authors.map(author =>
+              <p key={author}>
+                {author}
+              </p>
+            )}
         </div>
       </div>
     );

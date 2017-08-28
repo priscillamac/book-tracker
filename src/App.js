@@ -5,14 +5,13 @@ import SearchPage from './components/search_page';
 import BooksPage from './components/books_page';
 
 class BooksApp extends Component {
-
   render() {
     return (
       <div className="app">
         <Route exact path="/" component={BooksPage} />
         <Route path="/search" component={SearchPage} />
       </div>
-    )
+    );
   }
 }
 

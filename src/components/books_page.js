@@ -1,11 +1,12 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import * as BooksAPI from '../utils/books_api';
-import Book from './book';
+import Bookshelf from './bookshelf';
 
 class BooksPage extends Component {
   state = {
-    books: []
+    books: [],
+    showSuccessMessage: false
   };
 
   componentDidMount() {
@@ -32,48 +33,24 @@ class BooksPage extends Component {
         </div>
         <div className="list-books-content">
           <div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">
-                Currently Reading
-              </h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {books.filter(book => book.shelf === 'currentlyReading').map(book =>
-                    <li key={book.id}>
-                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
-                    </li>
-                  )}
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">
-                Want To Read
-              </h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {books.filter(book => book.shelf === 'wantToRead').map(book =>
-                    <li key={book.id}>
-                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
-                    </li>
-                  )}
-                </ol>
-              </div>
-            </div>
-            <div className="bookshelf">
-              <h2 className="bookshelf-title">
-                Read
-              </h2>
-              <div className="bookshelf-books">
-                <ol className="books-grid">
-                  {books.filter(book => book.shelf === 'read').map(book =>
-                    <li key={book.id}>
-                      <Book book={book} value={book.shelf} onMoveBook={this.updateBook} />
-                    </li>
-                  )}
-                </ol>
-              </div>
-            </div>
+            <Bookshelf
+              books={books}
+              onMoveBook={this.updateBook}
+              bookshelfTitle="Currently Reading"
+              bookshelf="currentlyReading"
+            />
+            <Bookshelf
+              books={books}
+              onMoveBook={this.updateBook}
+              bookshelfTitle="Want To Read"
+              bookshelf="wantToRead"
+            />
+            <Bookshelf
+              books={books}
+              onMoveBook={this.updateBook}
+              bookshelfTitle="Read"
+              bookshelf="read"
+            />
           </div>
         </div>
         <div className="open-search">
