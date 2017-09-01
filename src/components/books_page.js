@@ -4,10 +4,17 @@ import * as BooksAPI from '../utils/books_api';
 import Bookshelf from './bookshelf';
 
 class BooksPage extends Component {
-  state = {
-    books: [],
-    showSuccessMessage: false
-  };
+  constructor(props) {
+    super(props);
+
+    this.state = {
+      books: [],
+      showSuccessMessage: false
+    };
+    
+    this.updateBook = this.updateBook.bind(this);
+  }
+
 
   componentDidMount() {
     BooksAPI.getAll().then(books => {
