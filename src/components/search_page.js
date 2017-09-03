@@ -1,38 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import * as BooksAPI from '../utils/books_api';
 import Book from './book';
 
 class SearchPage extends Component {
-  state = {
-    query: '', // what the user types in input
-    searchResults: [],
-    showNoResultsMessage: false
-  };
-
-  updateQuery = query => {
-    this.setState({ query });
-
-    if (query === '') {
-      this.setState({ searchResults: [], showNoResultsMessage: false });
-    } else {
-      BooksAPI.search(query).then(searchResults => {
-        this.setState({ searchResults, showNoResultsMessage: true });
-      });
-    }
-  };
-
-  updateBook = (book, newShelf) => {
-    book.shelf = newShelf;
-    BooksAPI.update(book, newShelf).then(
-      this.setState(state => ({
-        books: state.books.filter(b => b.id !== book.id).concat([book])
-      }))
-    );
-  };
-
   render() {
-    const { query, searchResults, showNoResultsMessage } = this.state;
+    const { query, searchResults, showNoResultsMessage, updateBook, onUpdateQuery } = this.props;
     const hasSearchResults = searchResults.length > 0;
 
     return (
@@ -54,7 +26,7 @@ class SearchPage extends Component {
               type="text"
               value={query}
               placeholder="Search by title or author"
-              onChange={event => this.updateQuery(event.target.value)}
+              onChange={event => onUpdateQuery(event.target.value)}
             />
           </div>
         </div>
@@ -69,8 +41,8 @@ class SearchPage extends Component {
                 <li key={book.id}>
                   <Book
                     book={book}
-                    onMoveBook={this.updateBook}
-                    value={book.shelf ? book.shelf : 'none'}
+                    value={book.shelf}
+                    onMoveBook={updateBook}
                   />
                 </li>
               )}

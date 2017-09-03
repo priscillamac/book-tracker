@@ -1,38 +1,10 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
-import * as BooksAPI from '../utils/books_api';
 import Bookshelf from './bookshelf';
 
 class BooksPage extends Component {
-  constructor(props) {
-    super(props);
-
-    this.state = {
-      books: [],
-      showSuccessMessage: false
-    };
-    
-    this.updateBook = this.updateBook.bind(this);
-  }
-
-
-  componentDidMount() {
-    BooksAPI.getAll().then(books => {
-      this.setState({ books });
-    });
-  }
-
-  updateBook = (book, newShelf) => {
-    book.shelf = newShelf;
-    BooksAPI.update(book, newShelf).then(
-      this.setState(state => ({
-        books: state.books.filter(b => b.id !== book.id).concat([book])
-      }))
-    );
-  };
-
   render() {
-    const { books } = this.state;
+    const { books, updateBook } = this.props;
     return (
       <div className="list-books">
         <div className="list-books-title">
@@ -41,22 +13,19 @@ class BooksPage extends Component {
         <div className="list-books-content">
           <div>
             <Bookshelf
-              books={books}
-              onMoveBook={this.updateBook}
+              books={books.filter(book => book.shelf === 'currentlyReading')}
+              onMoveBook={updateBook}
               bookshelfTitle="Currently Reading"
-              bookshelf="currentlyReading"
             />
             <Bookshelf
-              books={books}
-              onMoveBook={this.updateBook}
+              books={books.filter(book => book.shelf === 'wantToRead')}
+              onMoveBook={updateBook}
               bookshelfTitle="Want To Read"
-              bookshelf="wantToRead"
             />
             <Bookshelf
-              books={books}
-              onMoveBook={this.updateBook}
+              books={books.filter(book => book.shelf === 'read')}
+              onMoveBook={updateBook}
               bookshelfTitle="Read"
-              bookshelf="read"
             />
           </div>
         </div>
