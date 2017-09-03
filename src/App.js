@@ -10,14 +10,10 @@ class BooksApp extends Component {
     super(props);
 
     this.state = {
-      books: [],
-      query: '', // what the user types in input
-      searchResults: [],
-      showNoResultsMessage: false
+      books: []
     };
 
     this.updateBook = this.updateBook.bind(this);
-    this.updateQuery = this.updateQuery.bind(this);
   }
 
   componentDidMount() {
@@ -35,20 +31,8 @@ class BooksApp extends Component {
     );
   };
 
-  updateQuery = query => {
-    this.setState({ query });
-
-    if (query === '') {
-      this.setState({ searchResults: [], showNoResultsMessage: false });
-    } else {
-      BooksAPI.search(query).then(searchResults => {
-        this.setState({ searchResults, showNoResultsMessage: true });
-      });
-    }
-  };
-
   render() {
-    const { books, query, searchResults, showNoResultsMessage } = this.state;
+    const { books} = this.state;
 
     return (
       <div className="app">
@@ -63,12 +47,7 @@ class BooksApp extends Component {
           path="/search"
           render={() =>
             <SearchPage
-              onSearchChange={this.handleSearchChange}
               updateBook={this.updateBook}
-              query={query}
-              onUpdateQuery={this.updateQuery}
-              searchResults={searchResults}
-              showNoResultsMessage={showNoResultsMessage}
             />}
         />
       </div>

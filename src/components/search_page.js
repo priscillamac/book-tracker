@@ -1,10 +1,30 @@
 import React, { Component } from 'react';
 import { Link } from 'react-router-dom';
 import Book from './book';
+import * as BooksAPI from '../utils/books_api';
 
 class SearchPage extends Component {
+  state = {
+    query: '',
+    searchResults: [],
+    showNoResultsMessage: false
+  }
+
+  updateQuery = query => {
+    this.setState({ query });
+
+    if (query === '') {
+      this.setState({ searchResults: [], showNoResultsMessage: false });
+    } else {
+      BooksAPI.search(query).then(searchResults => {
+        this.setState({ searchResults, showNoResultsMessage: true });
+      });
+    }
+  };
+
   render() {
-    const { query, searchResults, showNoResultsMessage, updateBook, onUpdateQuery } = this.props;
+    const { query, searchResults, showNoResultsMessage } = this.state;
+    const { updateBook } = this.props;
     const hasSearchResults = searchResults.length > 0;
 
     return (
@@ -26,7 +46,7 @@ class SearchPage extends Component {
               type="text"
               value={query}
               placeholder="Search by title or author"
-              onChange={event => onUpdateQuery(event.target.value)}
+              onChange={event => this.updateQuery(event.target.value)}
             />
           </div>
         </div>

@@ -18,7 +18,7 @@ const Book = ({ book, onMoveBook, value }) => {
             value={value}
             onChange={event => onMoveBook(book, event.target.value)}
           >
-            <option value="none" disabled>
+            <option value="" disabled>
               Move to...
             </option>
             <option value="currentlyReading">Currently Reading</option>
