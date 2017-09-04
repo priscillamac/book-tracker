@@ -15,6 +15,7 @@ const Book = ({ book, onMoveBook, value }) => {
         />
         <div className="book-shelf-changer">
           <select
+            defaultValue="none"
             value={value}
             onChange={event => onMoveBook(book, event.target.value)}
           >

@@ -10,7 +10,10 @@ class BooksApp extends Component {
     super(props);
 
     this.state = {
-      books: []
+      books: [],
+      query: '',
+      searchResults: [],
+      showNoResultsMessage: false
     };
 
     this.updateBook = this.updateBook.bind(this);
@@ -26,13 +29,29 @@ class BooksApp extends Component {
     book.shelf = newShelf;
     BooksAPI.update(book, newShelf);
     this.setState(state => ({
-        books: state.books.filter(b => b.id !== book.id).concat([book])
-      })
-    );
+      books: state.books.filter(b => b.id !== book.id).concat([book])
+    }));
+  };
+
+  updateQuery = query => {
+    this.setState({ query });
+
+    if (query === '') {
+      this.setState({ searchResults: [], showNoResultsMessage: false });
+    } else {
+      BooksAPI.search(query).then(searchResults => {
+        const results = searchResults.map(book => {
+          const existingBook = this.state.books.find(v => v.id === book.id);
+          book.shelf = existingBook ? existingBook.shelf : 'none';
+          return book;
+        });
+        this.setState({ searchResults: results, showNoResultsMessage: true });
+      });
+    }
   };
 
   render() {
-    const { books} = this.state;
+    const { books, query, searchResults, showNoResultsMessage } = this.state;
 
     return (
       <div className="app">
@@ -48,6 +67,10 @@ class BooksApp extends Component {
           render={() =>
             <SearchPage
               updateBook={this.updateBook}
+              updateQuery={this.updateQuery}
+              query={query}
+              searchResults={searchResults}
+              showNoResultsMessage={showNoResultsMessage}
             />}
         />
       </div>
